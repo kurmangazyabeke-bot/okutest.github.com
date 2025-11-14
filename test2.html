@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Oqualani Test — 2-деңгей 💻</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body {font-family: Arial, sans-serif; background:#f0f4ff; margin:0;}
+.navbar {background:#3b82f6; color:white; padding:15px;}
+.navbar ul {display:flex; list-style:none; gap:15px; padding:0; margin:0;}
+.navbar a {color:white; text-decoration:none;}
+.wrap {padding:20px; max-width:900px; margin:auto;}
+.question-card {background:white; padding:20px; margin-bottom:15px; border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,0.1);}
+.question-card h4 {margin:0 0 10px 0;}
+.hint {font-size:14px; color:#6b7280; margin-bottom:10px;}
+button {background:#3b82f6; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; margin-top:10px;}
+button:hover {background:#2563eb;}
+
+/* Модальное окно */
+#resultModal, #congratsModal {
+  display:none; position:fixed; top:0; left:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.5);
+  justify-content:center; align-items:center;
+  z-index:1000;
+}
+.modal-content {
+  background:white;
+  width:90%;
+  max-width:950px;
+  display:flex; gap:20px;
+  border-radius:10px; padding:20px;
+}
+.modal-left, .modal-right {flex:1; min-width:300px;}
+.modal-left {
+  background:#f9fafb; padding:15px;
+  border-radius:10px; max-height:70vh; overflow-y:auto;
+}
+.modal-left table {width:100%; border-collapse:collapse;}
+.modal-left th, .modal-left td {border-bottom:1px solid #ddd; padding:5px; text-align:left;}
+.modal-right {display:flex; flex-direction:column; justify-content:center; align-items:center;}
+.modal-buttons {
+  display:flex; gap:15px; margin-top:20px; justify-content:center;
+}
+#retryBtn, #nextLevelBtn, #homeBtn {padding:10px 18px; font-weight:600;}
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="nav-inner">
+    <h1>💻 Oqualani Test</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Басты бет</a></li>
+        <li><a href="profile.html">Профиль</a></li>
+        <li><a href="login.html">Кіру</a></li>
+        <li><a href="register.html">Тіркелу</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <h2 id="levelTitle">2-деңгей: Орташа деңгей</h2>
+  <div id="questionsContainer"></div>
+  <button id="finishBtn">Тестті аяқтау</button>
+</main>
+
+<!-- Модальное окно с результатами -->
+<div id="resultModal">
+  <div class="modal-content">
+    <div class="modal-left">
+      <h3>Қате жауаптар</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Сұрақ</th>
+            <th>Жауабың</th>
+            <th>Кеңес</th>
+          </tr>
+        </thead>
+        <tbody id="wrongTableBody"></tbody>
+      </table>
+    </div>
+    <div class="modal-right">
+      <canvas id="resultChart" style="max-width:280px;"></canvas>
+      <div class="modal-buttons">
+        <button id="retryBtn">Қайта тапсыру</button>
+        <button id="nextLevelBtn">Келесі деңгей</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Модальное окно с похвалой -->
+<div id="congratsModal">
+  <div class="modal-content" style="flex-direction:column; text-align:center;">
+    <h2>Жарайсың! Тамаша нәтиже!</h2>
+    <button id="homeBtn">Басты бет</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const tests = [
+  {
+    level:2,
+    title:'2-деңгей: Орташа деңгей',
+    questions:[
+      {q:"IP-адрес дегеніміз не?", options:["Шифрлау бағдарламасы","Сайт атауы","Желідегі құрылғының бірегей сандық идентификаторы"], answer:2, hint:"Бұл компьютеріңіздің интернеттегі пошта мекенжайы сияқты."},
+      {q:"Электрондық кестелермен жұмыс істеуге арналған бағдарламаның түрі қандай?", options:["Суреттерді өңдеу бағдарламасы","Кестелік процессор (мысалы, Microsoft Excel)","VLC Media Player"], answer:1, hint:"Microsoft Office бағдарламасында 'E' әрпімен басталады."},
+      {q:"Бұлттық есептеу (Cloud Computing) дегеніміз не?", options:["Компьютер ресурстарын интернет арқылы ұсыну","3D графика жасау","Интернетсіз бағдарламаларды іске қосу"], answer:0, hint:"Деректерді қашықтағы серверде сақтауға және бағдарламаларды іске қосуға мүмкіндік береді."},
+      {q:"Басқа бағдарламаларға қосылып, оларды зақымдайтын зиянды бағдарлама қалай аталады?", options:["Электрондық пошта","Компьютер вирусы","Құрылғы драйвері"], answer:1, hint:"Атауы биологиядан алынған."},
+      {q:"HTML деген не?", options:["Деректерді сақтау құрылғысы","Гипертекстті белгілеу тілі","Суреттерді өңдеу бағдарламасы"], answer:1, hint:"Веб-сайттардың құрылымын жасау үшін қолданылады."},
+      {q:"Қатынау арнасының өткізу қабілеті дегеніміз не?", options:["Қосылған құрылғылар саны","Құрылғылар арасындағы қашықтық","Деректерді берудің максималды жылдамдығы"], answer:2, hint:"Файлдарды қаншалықты тез жүктей алатыныңыз осы параметрге байланысты."},
+      {q:"Мегабайт (МБ) мен Мегабит (Мбит) арасындағы айырмашылық неде?", options:["Мбит МБ-ден 8 есе көп","Бірдей","Мбит жылдамдық үшін, МБ деректер көлемі үшін"], answer:2, hint:"Бір байттағы бит санын еске түсіріңіз."},
+      {q:"Әртүрлі желілерді қосатын және трафикті бағыттайтын желілік элемент қандай?", options:["Маршрутизатор (Роутер)","Принтер","Қуат кабелі"], answer:0, hint:"Деректер желіге қандай жолмен жететінін осы құрылғы анықтайды."},
+      {q:"Бэкап (backup) деген не?", options:["Деректердің резервтік көшірмесін жасау","ОС орнату","Файлдарды жою"], answer:0, hint:"Ақпаратты сақтау процесі."},
+      {q:"Firewall (желіаралық экран) деген не?", options:["Процессорды жеделдететін құрылғы","Желілік трафикті бақылайтын қорғаныс жүйесі","Дисктерге жазу бағдарламасы"], answer:1, hint:"Желі мен интернет арасындағы «қақпашы» ретінде әрекет етеді."},
+      {q:"Бағдарламаны тегін, бірақ шектеулі пайдалану лицензиясының түрі қандай?", options:["Freeware","Shareware","Commercial"], answer:1, hint:"Атауында 'Share' — бөлісу деген сөз бар."},
+      {q:"Домендік атау дегеніміз не?", options:["Нұсқаулар жиыны","Сайттың бірегей атауы","Файл түрі"], answer:1, hint:"Браузердің адрес жолағына енгізесіз."},
+      {q:"API дегеніміз не?", options:["Мәтінді форматтау бағдарламасы","Қосымшаларды бағдарламалау интерфейсі","Уақыт өлшем бірлігі"], answer:1, hint:"Бағдарламалар бір-бірімен өзара әрекеттесуге мүмкіндік береді."},
+      {q:"Деректерді оқылмайтындай қорғау әдісі қалай аталады?", options:["Сканерлеу","Шифрлау","Компиляция"], answer:1, hint:"Кері процесс — дешифрлау."},
+      {q:"«Жұлдыз» топологиясы қандай?", options:["Компьютерлер сақинамен қосылған","Барлығы орталық түйінге қосылған","Компьютерлер жұппен қосылған"], answer:1, hint:"Бір компьютер ажыратылса, қалғандары жұмысын жалғастыра береді."}
+    ]
+  }
+];
+
+let currentLevel = 0;
+let userAnswers = [];
+const questionsContainer = document.getElementById('questionsContainer');
+const levelTitle = document.getElementById('levelTitle');
+
+function renderQuestions(){
+  const test = tests[currentLevel];
+  levelTitle.textContent = test.title;
+  userAnswers = Array(test.questions.length).fill(null);
+  questionsContainer.innerHTML='';
+
+  test.questions.forEach((q,i)=>{
+    const card = document.createElement('div');
+    card.className='question-card';
+    card.innerHTML = `<h4>Сұрақ ${i+1}: ${q.q}</h4>
+                      <div class="hint">${q.hint}</div>`;
+    q.options.forEach((opt,j)=>{
+      const label = document.createElement('label');
+      label.style.display='block';
+      label.innerHTML = `<input type="radio" name="q${i}" value="${j}"> ${opt}`;
+      label.querySelector('input').addEventListener('change',()=>{userAnswers[i]=j;});
+      card.appendChild(label);
+    });
+    questionsContainer.appendChild(card);
+  });
+}
+
+function finishTest(){
+  const test = tests[currentLevel];
+  let correct = 0;
+  const wrongAnswers = [];
+
+  userAnswers.forEach((ans,i)=>{
+    if(ans===test.questions[i].answer){
+      correct++;
+    } else {
+      wrongAnswers.push({
+        question: test.questions[i].q,
+        userAnswer: ans !== null ? test.questions[i].options[ans] : 'Жауап жоқ',
+        hint: test.questions[i].hint
+      });
+    }
+  });
+
+  const percent = Math.round(correct/test.questions.length*100);
+
+  const tbody = document.getElementById('wrongTableBody');
+  tbody.innerHTML='';
+  wrongAnswers.forEach(w=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${w.question}</td><td>${w.userAnswer}</td><td>${w.hint}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  const ctx = document.getElementById('resultChart').getContext('2d');
+  if(window.chartInstance) window.chartInstance.destroy();
+  window.chartInstance = new Chart(ctx,{
+    type:'doughnut',
+    data:{
+      labels:['Дұрыс','Қате'],
+      datasets:[{
+        data:[percent,100-percent],
+        backgroundColor:['#16a34a','#ef4444'],
+        borderWidth:2,
+        borderColor:'#fff'
+      }]
+    },
+    options:{
+      responsive:true,
+      plugins:{
+        legend:{position:'bottom'},
+        tooltip:{callbacks:{label:(ctx)=>ctx.label+': '+ctx.raw+'%'}}
+      }
+    }
+  });
+
+  // Сохраняем результат второго уровня в профиль
+  let activeUser = JSON.parse(localStorage.getItem('activeUser') || 'null');
+  if(activeUser){
+    if(!activeUser.results) activeUser.results=[];
+    activeUser.results[test.level-1] = percent;
+    localStorage.setItem('activeUser', JSON.stringify(activeUser));
+  }
+
+  // Показать модальное окно с результатами
+  const resultModal = document.getElementById('resultModal');
+  const congratsModal = document.getElementById('congratsModal');
+  resultModal.style.display='flex';
+
+  document.getElementById('retryBtn').onclick = ()=>{
+    resultModal.style.display='none';
+    renderQuestions();
+  };
+
+  const nextBtn = document.getElementById('nextLevelBtn');
+  if(percent>=65){
+    nextBtn.style.display='inline-block';
+    nextBtn.onclick = ()=>{
+      resultModal.style.display='none';
+      congratsModal.style.display='flex';
+    };
+  } else {
+    nextBtn.style.display='none';
+  }
+
+  document.getElementById('homeBtn').onclick = ()=>{
+    congratsModal.style.display='none';
+    location.href='index.html';
+  };
+}
+
+document.getElementById('finishBtn').addEventListener('click',finishTest);
+renderQuestions();
+</script>
+</body>
+</html>

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Oqualani Test — Басты бет</title>
+<link rel="stylesheet" href="style.css"/>
+
+<style>
+body {font-family: Arial, sans-serif; background:#f0f4ff; margin:0;}
+
+/* --------------------- NAVBAR --------------------- */
+header.navbar {
+  background:#3b82f6;
+  color:white;
+  padding:15px;
+  position: relative;
+}
+
+.nav-inner {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+/* Бургер кнопка */
+.burger {
+  display:none;
+  flex-direction:column;
+  gap:4px;
+  cursor:pointer;
+}
+.burger div {
+  width:25px;
+  height:3px;
+  background:white;
+  border-radius:3px;
+}
+
+/* Меню */
+header.navbar nav ul {
+  display:flex;
+  list-style:none;
+  gap:15px;
+  padding:0;
+  margin:0;
+}
+header.navbar a {
+  color:white;
+  text-decoration:none;
+}
+
+header .logo h1 {margin:0;}
+header .logo p {margin:0; font-size:14px; opacity:0.8;}
+
+/* --------------------- HERO --------------------- */
+.hero {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#e0f0ff;
+  padding:40px;
+  border-radius:15px;
+  margin-bottom:30px;
+  gap:20px;
+}
+
+.hero-left {max-width:50%;}
+.hero-left h2 {font-size:32px; margin-bottom:20px; line-height:1.4;}
+.hero-left p {font-size:18px; margin-bottom:25px; font-style:italic; color:#111;}
+
+.hero-right img {
+  width:400px;
+  max-width:100%;
+  border-radius:15px;
+}
+
+/* GO Button */
+.go-btn {
+  background:#3b82f6; 
+  color:white;
+  border:none;
+  border-radius:10px;
+  font-weight:600;
+  cursor:pointer;
+  padding:14px 30px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.go-btn:hover {
+  transform: scale(1.05);
+  box-shadow:0 0 20px rgba(59,130,246,0.6);
+}
+
+/* --------------------- FEATURES --------------------- */
+.features {
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  margin-top:40px;
+  flex-wrap:wrap;
+}
+.feature-card {
+  background:#fff;
+  flex:1;
+  min-width:250px;
+  border-radius:12px;
+  padding:20px;
+  text-align:center;
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+.feature-card img {width:60px; margin-bottom:15px;}
+.feature-card p {line-height:1.4; white-space: pre-line;}
+
+/* --------------------- LEVELS --------------------- */
+.levels {
+  display:flex;
+  flex-wrap:wrap;
+  gap:20px;
+  justify-content:center;
+  margin-top:30px;
+}
+.level-card {
+  background:#fff;
+  border-radius:12px;
+  padding:20px;
+  width:200px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+  text-align:center;
+  cursor:pointer;
+  transition: transform 0.3s, box-shadow 0.3s, border 0.3s;
+  position:relative;
+}
+.level-card:hover {transform: translateY(-5px); box-shadow:0 8px 20px rgba(0,0,0,0.2);}
+.level-card.disabled {opacity:0.5; cursor:not-allowed; animation:none;}
+.level-card.pulse {animation: pulse 1.5s infinite; border:2px solid #3b82f6;}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(59,130,246,0.4);}
+  70% { box-shadow: 0 0 0 10px rgba(59,130,246,0);}
+  100% { box-shadow: 0 0 0 0 rgba(59,130,246,0);}
+}
+
+.level-title {font-weight:bold; margin-bottom:10px;}
+.progress-bar-bg {width:100%; background:#e5e7eb; border-radius:10px; overflow:hidden; height:15px; margin-bottom:5px;}
+.progress-bar-fill {height:100%; width:0; border-radius:10px; transition: width 1s ease-in-out, background 0.5s;}
+.green {background:#16a34a;}
+.yellow {background:#facc15;}
+
+/* --------------------- MOBILE ADAPTATION --------------------- */
+
+@media (max-width: 768px) {
+
+  /* Burger visible */
+  .burger { display:flex; }
+
+  /* Hide menu initially */
+  header.navbar nav {
+    display:none;
+    width:100%;
+  }
+
+  header.navbar nav.open {
+    display:block;
+  }
+
+  header.navbar nav ul {
+    flex-direction:column;
+    gap:10px;
+    background:#2563eb;
+    padding:15px;
+    margin-top:15px;
+    border-radius:10px;
+  }
+
+  /* HERO MOBILE */
+  .hero {
+    flex-direction:column;
+    text-align:center;
+    padding:25px;
+  }
+
+  .hero-left {max-width:100%;}
+  .hero-left h2 {font-size:24px;}
+  .hero-left p {font-size:16px;}
+
+  .hero-right img {width:250px;}
+
+  /* FEATURES MOBILE */
+  .features {flex-direction:column;}
+
+}
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="nav-inner">
+
+    <div class="logo">
+      <h1>Oqualani Test</h1>
+      <p>ҰБТ-ға дайындық</p>
+    </div>
+
+    <div class="burger" onclick="toggleMenu()">
+      <div></div><div></div><div></div>
+    </div>
+
+    <nav id="mobileMenu">
+      <ul>
+        <li><a href="index.html">Басты бет</a></li>
+        <li><a href="profile.html">Профиль</a></li>
+        <li><a href="login.html">Кіру</a></li>
+        <li><a href="register.html">Тіркелу</a></li>
+      </ul>
+    </nav>
+
+  </div>
+</header>
+
+<script>
+function toggleMenu() {
+  document.getElementById("mobileMenu").classList.toggle("open");
+}
+</script>
+
+<main class="wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <h2>Кел балалар оқылық, оқығанды көңілге ықыласпен тоқылып.</h2>
+      <button class="go-btn" onclick="location.href='test.html'">GO</button>
+    </div>
+    <div class="hero-right">
+      <img src="https://www.nicepng.com/png/full/264-2648451_knowledge-management-made-simple-management.png" alt="Knowledge Banner"/>
+    </div>
+  </section>
+
+  <!-- LEVELS -->
+  <section class="levels" id="levelsContainer"></section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="feature-card">
+      <img src="https://cdn-icons-png.flaticon.com/512/1055/1055646.png" alt="Тест"/>
+      <p>1. Тест тапсырмалары\nӘр түрлі тақырыптар бойынша жауап берген тест тапсырмасын орындаңыз</p>
+    </div>
+    <div class="feature-card">
+      <img src="https://cdn-icons-png.flaticon.com/512/3602/3602122.png" alt="Бейнесабақтар"/>
+      <p>2. Бейнесабақтар\nТақырыптарды жан-жақты түсіндіретін бейнесабақтарды көріңіз</p>
+    </div>
+    <div class="feature-card">
+      <img src="https://cdn-icons-png.flaticon.com/512/2910/2910761.png" alt="Жетістіктер"/>
+      <p>3. Жетістіктерді бақылау\nПрогрестіңізді бақылаңыз, өзсіз түстіңізді анықтаңыз</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- CTA -->
+<section class="cta-section" style="background: linear-gradient(135deg, #6ec1e4, #4a90e2); color: white; text-align: center; padding: 70px 20px;">
+  <h2 style="font-size: 2rem; margin-bottom: 10px;">Присоединяйся к <span style="font-weight:700;">Oqualani!</span></h2>
+  <p style="font-size: 1.1rem; margin-bottom: 25px;">Начни свой путь к знаниям и развитию уже сегодня 🚀</p>
+  <a href="#contact-form" style="background: white; color: #4a90e2; padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: all 0.3s;">Получить консультацию</a>
+</section>
+
+<!-- FOOTER — unchanged -->
+<footer style="background: #f9fafb; color: #333; padding: 60px 20px; position: relative;">
+  <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px;">
+    <div>
+      <h3 style="color: #4a90e2;">Свяжитесь с нами</h3>
+      <form id="contact-form" style="margin-top: 15px;">
+        <input type="text" placeholder="Ваше имя" required style="width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 15px;">
+        <input type="tel" placeholder="Ваш телефон" required style="width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 15px;">
+        <button type="submit" style="width: 100%; background: #4a90e2; color: white; border: none; padding: 14px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background 0.3s;">Получить консультацию</button>
+      </form>
+    </div>
+    <div>
+      <h3 style="color: #4a90e2;">Контакты</h3>
+      <p>📞 Телефон: +7-776-930-00-30</p>
+      <p>✉️ Email: ayauly_jan@list.ru</p>
+      <p>📍 Баймаханова Назерке</p>
+    </div>
+    <div>
+      <h3 style="color: #4a90e2;">Полезные ссылки</h3>
+      <ul style="list-style: none; padding: 0; margin-top: 15px;">
+        <li><a href="#" style="color: #333; text-decoration: none;">Политика конфиденциальности</a></li>
+        <li><a href="#" style="color: #333; text-decoration: none;">FAQ</a></li>
+      </ul>
+    </div>
+  </div>
+  <hr style="margin: 40px 0; border: none; border-top: 1px solid #ddd;">
+  <p style="text-align: center; color: #888;">© 2025 Oqualani. Все права защищены.</p>
+</footer>
+
+<!-- Модалка -->
+<div id="modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 1000; animation: fadeIn 0.3s;">
+  <div style="background: white; border-radius: 12px; padding: 30px; text-align: center; width: 320px; transform: scale(0.9); opacity: 0; animation: scaleIn 0.4s forwards;">
+    <h3 style="color: #4a90e2;">✅ Заявка отправлена!</h3>
+    <p style="margin-top: 10px;">Мы свяжемся с вами в ближайшее время.</p>
+    <button onclick="closeModal()" style="margin-top: 20px; background: #4a90e2; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: background 0.3s;">Закрыть</button>
+  </div>
+</div>
+
+<style>
+@keyframes fadeIn {from {opacity: 0;} to {opacity: 1;}}
+@keyframes scaleIn {from {transform: scale(0.9); opacity: 0;} to {transform: scale(1); opacity: 1;}}
+button:hover {background: #357abd !important;}
+</style>
+
+<script>
+const form = document.getElementById('contact-form');
+const modal = document.getElementById('modal');
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  modal.style.display = 'flex';
+  form.reset();
+});
+
+function closeModal() { modal.style.display = 'none'; }
+modal.addEventListener('click', (e) => { if(e.target===modal) closeModal(); });
+</script>
+
+<script>
+let activeUser = JSON.parse(localStorage.getItem('activeUser')||'null');
+
+const totalLevels = 2; 
+const container = document.getElementById('levelsContainer');
+
+for(let i=0;i<totalLevels;i++){
+  const card = document.createElement('div');
+  card.className='level-card';
+  
+  const levelTitle = document.createElement('div');
+  levelTitle.className='level-title';
+  levelTitle.textContent = `Уровень ${i+1}`;
+  
+  const barBg = document.createElement('div');
+  barBg.className='progress-bar-bg';
+  const barFill = document.createElement('div');
+  barFill.className='progress-bar-fill';
+  
+  let percent = (activeUser && activeUser.results && activeUser.results[i]) || 0;
+  barFill.classList.add(percent>=65?'green':'yellow');
+  barFill.style.width='0';
+  barFill.textContent = percent+'%';
+  
+  barBg.appendChild(barFill);
+  card.appendChild(levelTitle);
+  card.appendChild(barBg);
+
+  if(activeUser){
+    if(i===0){ 
+      card.classList.add('pulse'); 
+      card.addEventListener('click',()=>{ location.href='test.html'; }); 
+    }
+    else if(i===1 && activeUser.results[0]>=65){ 
+      card.classList.add('pulse'); 
+      card.addEventListener('click',()=>{ location.href='test2.html'; }); 
+    }
+    else { 
+      card.classList.add('disabled'); 
+    }
+  } else {
+    card.classList.add('disabled');
+  }
+
+  container.appendChild(card);
+  setTimeout(()=>{ barFill.style.width = percent+'%'; },100);
+}
+</script>
+
+</body>
+</html>

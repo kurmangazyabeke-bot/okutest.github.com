@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Авторизация</title>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<header class="navbar">
+<div class="nav-inner">
+  <div class="logo"><h1>Oqualani Test</h1></div>
+  <nav>
+    <ul>
+      <li><a href="index.html">Басты бет</a></li>
+      <li><a href="profile.html">Профиль</a></li>
+      <li><a href="login.html">Кіру</a></li>
+      <li><a href="register.html">Тіркелу</a></li>
+    </ul>
+  </nav>
+</div>
+</header>
+
+<main class="wrap">
+  <h2>Кіру</h2>
+  <input type="text" id="username" placeholder="Логин"><br><br>
+  <input type="password" id="password" placeholder="Пароль"><br><br>
+  <button onclick="login()">Кіру</button>
+</main>
+
+<footer>© 2025 Oqualani Test</footer>
+
+<script>
+function login(){
+  let username=document.getElementById('username').value.trim();
+  let password=document.getElementById('password').value.trim();
+  let users=JSON.parse(localStorage.getItem('users')||'{}');
+  if(!users[username]){alert("Пайдаланушы жоқ"); return;}
+  if(users[username].password!==password){alert("Қате пароль"); return;}
+  localStorage.setItem('activeUser',JSON.stringify({...users[username],username}));
+  alert("Кіру сәтті өтті");
+  location.href='index.html';
+}
+</script>
+</body>
+</html>

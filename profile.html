@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Профиль — Oqualani Test 💻</title>
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+  overflow-x: hidden;
+  color: #111827;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Анимационные фигуры */
+.shape { position: absolute; border-radius: 50%; opacity: 0.2; animation: float 20s linear infinite; z-index: 0; }
+@keyframes float { 0% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-200px) rotate(180deg); } 100% { transform: translateY(0) rotate(360deg); } }
+
+/* Навбар */
+header.navbar {
+  background: rgba(30,41,59,0.9);
+  color: white;
+  padding: 15px 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+}
+.nav-inner {
+  width: 90%;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo h1 { font-size: 1.7rem; display: flex; align-items: center; gap: 10px; }
+.logo h1::before { content: "💻"; }
+nav ul { display: flex; list-style: none; gap: 25px; margin:0; padding:0; }
+nav ul li a { text-decoration: none; color: white; font-weight: 600; transition: 0.3s; }
+nav ul li a:hover { color: #38bdf8; }
+
+/* Burger для мобильных */
+.burger { display: none; flex-direction: column; gap: 4px; cursor: pointer; }
+.burger div { width: 25px; height: 3px; background: white; border-radius: 3px; }
+
+/* Основной контент */
+main {
+  width: 90%;
+  max-width: 1200px;
+  margin: 40px auto;
+  background: rgba(255,255,255,0.95);
+  border-radius: 25px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 1;
+  flex: 1;
+}
+
+h2 { text-align: center; font-size: 2rem; margin-bottom: 35px; color: #1e293b; }
+
+/* Профильная сетка */
+.profile-container { display: grid; grid-template-columns: 1fr 2fr; gap: 30px; }
+.profile-card {
+  background: linear-gradient(145deg,#ffffff,#f0f4f8);
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
+}
+.profile-card:hover { transform: translateY(-5px); }
+.profile-card img {
+  width: 140px; height: 140px; border-radius: 50%;
+  object-fit: cover; border: 4px solid #3b82f6; margin-bottom: 20px; cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.profile-card img:hover { transform: scale(1.05) rotate(5deg); }
+.profile-card input[type="file"] { display: none; }
+.profile-details p { font-size: 1.05rem; color: #374151; margin: 8px 0; }
+.profile-details strong { color: #111827; }
+
+/* Статистика */
+.stats-section { display: flex; flex-direction: column; gap: 25px; }
+.card {
+  background: linear-gradient(145deg,#ffffff,#e6f0ff);
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease;
+}
+.card:hover { transform: translateY(-5px); }
+.card h3 { font-size: 1.3rem; margin-bottom: 15px; color: #1e293b; }
+
+/* Прогресс */
+.progress-bar-bg { width: 100%; background: #e5e7eb; border-radius: 15px; overflow: hidden; height: 22px; margin-bottom: 15px; }
+.progress-bar-fill { height: 100%; border-radius: 15px; text-align: right; color: white; line-height: 22px; padding-right: 8px; font-size: 14px; transition: width 1s ease-in-out; }
+.green { background:#16a34a; }
+.yellow { background:#facc15; color:#111827; }
+.red { background:#ef4444; }
+
+/* История тестов */
+#test-history table { width: 100%; border-collapse: collapse; }
+#test-history th, #test-history td { border: 1px solid #d1d5db; padding: 12px; text-align: center; border-radius: 8px; }
+#test-history th { background: #3b82f6; color: white; }
+#test-history td { background: rgba(255,255,255,0.8); }
+
+/* Кнопки */
+.buttons { display: flex; justify-content: center; gap: 20px; margin-top: 35px; flex-wrap: wrap; }
+button { background: #3b82f6; color: white; border: none; padding: 12px 25px; border-radius: 15px; cursor: pointer; font-weight: 600; font-size: 1rem; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+button:hover { background: #2563eb; transform: translateY(-2px); }
+button.logout { background: #ef4444; }
+button.logout:hover { background: #dc2626; transform: translateY(-2px); }
+
+/* Футер */
+footer { text-align: center; padding: 20px; background: rgba(30,41,59,0.9); color: white; border-radius: 0 0 20px 20px; backdrop-filter: blur(5px); }
+
+/* --- Мобильная адаптация --- */
+@media (max-width: 768px){
+  .burger { display: flex; }
+  nav { display: none; width: 100%; }
+  nav.open { display: block; }
+  nav ul { flex-direction: column; gap: 12px; background: #1e293b; padding: 15px; border-radius: 10px; }
+  .profile-container { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Фигуры -->
+<div class="shape" style="width:100px;height:100px;top:10%;left:5%;background:#38bdf8;"></div>
+<div class="shape" style="width:150px;height:150px;top:70%;left:80%;background:#f472b6;"></div>
+<div class="shape" style="width:80px;height:80px;top:40%;left:50%;background:#34d399;"></div>
+<div class="shape" style="width:120px;height:120px;top:80%;left:20%;background:#facc15;"></div>
+
+<header class="navbar">
+  <div class="nav-inner">
+    <div class="logo"><h1>Oqualani Test</h1></div>
+    <div class="burger" onclick="toggleMenu()"><div></div><div></div><div></div></div>
+    <nav id="mobileMenu">
+      <ul>
+        <li><a href="index.html">Басты бет</a></li>
+        <li><a href="profile.html">Профиль</a></li>
+        <li><a href="login.html">Кіру</a></li>
+        <li><a href="register.html">Тіркелу</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <h2>👤 Жеке бет</h2>
+
+  <div class="profile-container">
+    <div class="profile-card">
+      <img id="avatar" src="default-avatar.png" alt="Avatar">
+      <input type="file" id="avatarUpload" accept="image/*">
+      <div class="profile-details">
+        <p><strong>Аты-жөні:</strong> <span id="fullname">—</span></p>
+        <p><strong>Туған күні:</strong> <span id="birthdate">—</span></p>
+        <p><strong>Телефон:</strong> <span id="phone">—</span></p>
+        <p><strong>Email:</strong> <span id="email">—</span></p>
+      </div>
+    </div>
+
+    <div class="stats-section">
+      <div class="card">
+        <h3>🎯 Прогресс по уровням</h3>
+        <div id="progress-list"></div>
+      </div>
+      <div class="card">
+        <h3>📊 История тестов</h3>
+        <div id="test-history">
+          <table>
+            <thead>
+              <tr><th>Уровень</th><th>Результат</th><th>Статус</th></tr>
+            </thead>
+            <tbody id="history-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="buttons">
+    <button id="editBtn">✏️ Түзету</button>
+    <button class="logout" onclick="logout()">🚪 Шығу</button>
+  </div>
+</main>
+
+<footer>© 2025 Oqualani Test</footer>
+
+<script>
+// Burger меню
+function toggleMenu(){ document.getElementById('mobileMenu').classList.toggle('open'); }
+
+// Загружаем пользователя
+let activeUser = JSON.parse(localStorage.getItem('activeUser')||'null');
+if(!activeUser){ alert("Сначала войдите!"); location.href='login.html'; }
+
+document.getElementById('fullname').textContent = activeUser.fullname || activeUser.username || '—';
+document.getElementById('birthdate').textContent = activeUser.birthdate || '—';
+document.getElementById('phone').textContent = activeUser.phone || '—';
+document.getElementById('email').textContent = activeUser.email || '—';
+
+const avatarEl = document.getElementById('avatar');
+const avatarUpload = document.getElementById('avatarUpload');
+if(activeUser.avatar) avatarEl.src = activeUser.avatar;
+
+avatarEl.addEventListener('click', () => avatarUpload.click());
+avatarUpload.addEventListener('change', function(){
+  const file = this.files[0];
+  if(file){
+    const reader = new FileReader();
+    reader.onload = function(e){
+      avatarEl.src = e.target.result;
+      activeUser.avatar = e.target.result;
+      localStorage.setItem('activeUser', JSON.stringify(activeUser));
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+// Прогресс и история тестов
+const list = document.getElementById('progress-list');
+const history = document.getElementById('history-body');
+if(activeUser.results){
+  activeUser.results.forEach((p,i)=>{
+    const barBg = document.createElement('div'); barBg.className='progress-bar-bg';
+    const barFill = document.createElement('div'); 
+    barFill.className='progress-bar-fill '+(p>=65?'green':p>=40?'yellow':'red');
+    barFill.style.width='0'; barFill.textContent=p+'%';
+    barBg.appendChild(barFill);
+    const label=document.createElement('div'); label.style.margin='8px 0'; label.textContent=`Уровень ${i+1}`;
+    list.appendChild(label); list.appendChild(barBg);
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${i+1}</td><td>${p}%</td><td>${p>=65?'✅ Пройден':'❌ Не пройден'}</td>`;
+    history.appendChild(tr);
+    setTimeout(()=>{ barFill.style.width=p+'%'; },100);
+  });
+}
+
+// Редактирование профиля
+const editBtn = document.getElementById('editBtn');
+editBtn.editing=false;
+editBtn.addEventListener('click', function(){
+  const fullnameEl = document.getElementById('fullname');
+  const birthdateEl = document.getElementById('birthdate');
+  const phoneEl = document.getElementById('phone');
+  const emailEl = document.getElementById('email');
+  if(editBtn.editing){
+    activeUser.fullname = fullnameEl.textContent;
+    activeUser.birthdate = birthdateEl.textContent;
+    activeUser.phone = phoneEl.textContent;
+    activeUser.email = emailEl.textContent;
+    localStorage.setItem('activeUser', JSON.stringify(activeUser));
+    fullnameEl.contentEditable=false; birthdateEl.contentEditable=false;
+    phoneEl.contentEditable=false; emailEl.contentEditable=false;
+    alert("✅ Профиль сохранен!"); editBtn.editing=false; editBtn.textContent="✏️ Түзету";
+  } else {
+    fullnameEl.contentEditable=true; birthdateEl.contentEditable=true;
+    phoneEl.contentEditable=true; emailEl.contentEditable=true;
+    fullnameEl.focus(); editBtn.editing=true; editBtn.textContent="💾 Сақтау";
+  }
+});
+
+function logout(){ localStorage.removeItem('activeUser'); location.href='index.html'; }
+</script>
+
+</body>
+</html>
